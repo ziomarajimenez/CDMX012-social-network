@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged } from './database/firebase-import.js';
 
 const rootDiv = document.getElementById('globalContainer');
 
-const routes = {
+export const routes = {
   '/': login,
   '/signup': signup,
   '/home': home,
@@ -27,6 +27,9 @@ export const onNavigate = (pathname) => {
 };
 
 window.onpopstate = () => {
+  while (rootDiv.firstChild) {
+    rootDiv.removeChild(rootDiv.firstChild);
+  }
   rootDiv.appendChild(routes[window.location.pathname]());
 };
 
