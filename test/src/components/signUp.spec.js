@@ -1,4 +1,7 @@
-import { createUser, createUserWithGoogle } from '../../../src/database/firebase.js';
+import {
+  createUser, createUserWithGoogle, createUserWithTwitter,
+} from '../../../src/database/firebase.js';
+import { signInWithPopup } from '../../../src/database/firebase-import.js';
 
 jest.mock('../../../src/database/firebase-import.js');
 
@@ -30,7 +33,28 @@ describe('createUserWithGoogle', () => {
     expect(typeof createUserWithGoogle).toBe('function');
   });
   it('Should return true', async () => {
-    const result = await createUserWithGoogle();
-    expect(result).toBe(true);
+    const exp = await createUserWithGoogle();
+    expect(exp).toBe(true);
+  });
+  it('Should return false', async () => {
+    signInWithPopup.mockRejectedValue();
+    const exp = await createUserWithGoogle();
+    expect(exp).toBe(false);
+  });
+});
+
+describe('createUserWithTwitter', () => {
+  it('Should be a function', async () => {
+    expect(typeof createUserWithTwitter).toBe('function');
+  });
+  it('Should return true', async () => {
+    signInWithPopup.mockResolvedValue();
+    const exp = await createUserWithTwitter();
+    expect(exp).toBe(true);
+  });
+  it('Should return false', async () => {
+    signInWithPopup.mockRejectedValue();
+    const exp = await createUserWithTwitter();
+    expect(exp).toBe(false);
   });
 });

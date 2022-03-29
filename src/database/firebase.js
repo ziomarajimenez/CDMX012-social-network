@@ -37,20 +37,25 @@ export const createUserWithGoogle = async () => {
   const auth = getAuth();
   let userCreateGoogle;
   const provider = new GoogleAuthProvider();
-  console.log(provider);
   try {
     const result = await signInWithPopup(auth, provider);
     GoogleAuthProvider.credentialFromResult(result);
     userCreateGoogle = true;
   } catch (error) {
     GoogleAuthProvider.credentialFromError(error);
+  try {
+    const result = await signInWithPopup(auth, provider);
+    // GoogleAuthProvider.credentialFromResult(result);
+    userCreateGoogle = true;
+  } catch (error) {
+    // GoogleAuthProvider.credentialFromError(error);
     userCreateGoogle = false;
   }
   return userCreateGoogle;
 };
 
 export const createUserWithTwitter = async () => {
-  const provider2 = new TwitterAuthProvider();
+  const provider = new TwitterAuthProvider();
   const auth = getAuth();
   let userCreateTwitter;
   try {
@@ -59,14 +64,17 @@ export const createUserWithTwitter = async () => {
     userCreateTwitter = true;
   } catch (error) {
     TwitterAuthProvider.credentialFromError(error);
+    const result = await signInWithPopup(auth, provider);
+    // TwitterAuthProvider.credentialFromResult(result);
+    userCreateTwitter = true;
+  } catch (error) {
+    // TwitterAuthProvider.credentialFromError(error);
     userCreateTwitter = false;
   }
   return userCreateTwitter;
 };
 
 export const loginUserWithEmail = async () => {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
   const auth = getAuth();
   let loginWithEmail;
   try {
