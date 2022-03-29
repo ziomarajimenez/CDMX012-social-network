@@ -39,6 +39,12 @@ export const createUserWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
+    GoogleAuthProvider.credentialFromResult(result);
+    userCreateGoogle = true;
+  } catch (error) {
+    GoogleAuthProvider.credentialFromError(error);
+  try {
+    const result = await signInWithPopup(auth, provider);
     // GoogleAuthProvider.credentialFromResult(result);
     userCreateGoogle = true;
   } catch (error) {
@@ -53,6 +59,11 @@ export const createUserWithTwitter = async () => {
   const auth = getAuth();
   let userCreateTwitter;
   try {
+    const result = await signInWithPopup(auth, provider2);
+    TwitterAuthProvider.credentialFromResult(result);
+    userCreateTwitter = true;
+  } catch (error) {
+    TwitterAuthProvider.credentialFromError(error);
     const result = await signInWithPopup(auth, provider);
     // TwitterAuthProvider.credentialFromResult(result);
     userCreateTwitter = true;

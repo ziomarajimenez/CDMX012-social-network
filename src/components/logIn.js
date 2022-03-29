@@ -20,6 +20,11 @@ export const login = () => {
   const pLogo = document.createElement('p');
   const baseLogin = document.createElement('div');
   const pLogin = document.createElement('p');
+  const pLoginMovil = document.createElement('p');
+  const loginEmail = document.createElement('input');
+  const loginPassword = document.createElement('input');
+  const spanLoginPassword = document.createElement('span');
+  const imgEyePassword = document.createElement('i');
   const loginEmail = document.createElement('input');
   const loginPassword = document.createElement('input');
   const span = document.createElement('span');
@@ -55,11 +60,20 @@ export const login = () => {
   globalLogInDiv.setAttribute('class', 'globalLogInDiv');
   baseLogin.setAttribute('class', 'baseLogin');
   pLogin.setAttribute('class', 'pLogin');
+  pLoginMovil.setAttribute('class', 'pLoginMovil');
   loginPassword.setAttribute('class', 'inputLogin');
+  loginPassword.setAttribute('type', 'password');
+  loginPassword.setAttribute('placeholder', 'Password');
+  loginPassword.setAttribute('id', 'loginPassword');
   loginEmail.setAttribute('type', 'text');
   loginEmail.setAttribute('class', 'inputLogin');
   loginEmail.setAttribute('placeholder', 'Email');
   loginEmail.setAttribute('id', 'loginEmail');
+  
+  spanLoginPassword.setAttribute('class', 'eyePassword');
+  imgEyePassword.setAttribute('id', 'imgEyePassword2');
+  imgEyePassword.setAttribute('class', 'fa-solid fa-eye');
+
   loginPassword.setAttribute('type', 'password');
   loginPassword.setAttribute('placeholder', 'Password');
   loginPassword.setAttribute('id', 'loginPassword');
@@ -96,17 +110,26 @@ export const login = () => {
   pinkTexTwo.innerText = 'Tell us what you think, in a safe space to share ideas.';
   pinkTextThree.innerText = 'Create support networks among women.';
   pLogin.innerText = 'Log in';
+
+  pLoginMovil.innerText = 'Log in';
+
   buttonLogin.textContent = 'Login';
   pForgotPassword.innerText = 'Forgot password?';
   loginWithP.innerText = 'Or login with';
-  divSignUp.innerText = 'You don’t have an account??';
+  divSignUp.innerText = 'You don’t have an account?';
   pSignUp.innerText = 'Sign up';
+
   // append
   header.appendChild(divLogo);
   header.appendChild(imgLogo);
   divLogo.appendChild(pLogo);
+
+  spanLoginPassword.appendChild(loginPassword);
+  spanLoginPassword.appendChild(imgEyePassword);
+
   span.appendChild(loginPassword);
   span.appendChild(imgEye);
+
   globalContainer.appendChild(pinkContainerLogin);
   globalContainer.appendChild(globalLogInDiv);
   pinkContainerLogin.appendChild(pinkTextOne);
@@ -118,22 +141,32 @@ export const login = () => {
   globalLogInDiv.appendChild(header);
   globalLogInDiv.appendChild(pLogin);
   globalLogInDiv.appendChild(baseLogin);
+
+  baseLogin.appendChild(pLoginMovil);
+  baseLogin.appendChild(loginEmail);
+  baseLogin.appendChild(spanLoginPassword);
+
   baseLogin.appendChild(loginEmail);
   baseLogin.appendChild(loginPassword);
   baseLogin.appendChild(span);
+
   baseLogin.appendChild(pForgotPassword);
   baseLogin.appendChild(buttonLogin);
   baseLogin.appendChild(divLoginWith);
   baseLogin.appendChild(errorMessage);
   baseLogin.appendChild(divSignUp);
   divSignUp.appendChild(pSignUp);
+
   divLoginWith.appendChild(loginWithP);
+
   divLoginWith.appendChild(divButtons);
   divButtons.appendChild(loginWithGoogle);
   divButtons.appendChild(loginWithTwitter);
   loginWithGoogle.appendChild(imgGoogle);
   loginWithTwitter.appendChild(imgTwitter);
+
   // divLoginWith.appendChild(loginWithTwitter);
+
   globalLogInDiv.appendChild(errorMessage);
 
   buttonLogin.addEventListener('click', () => {
@@ -168,35 +201,16 @@ export const login = () => {
     onNavigate('/signup');
   });
 
-  // imgEye.addEventListener('click', () => {
-  //   if (loginPassword.type === 'password') {
-  //     loginPassword.type = 'text';
-  //   } else {
-  //     loginPassword.type = 'password';
-  //   }
-  // });
+  imgEyePassword.addEventListener('click', () => {
+    if (loginPassword.type === 'password') {
+      loginPassword.type = 'text';
+    } else {
+      loginPassword.type = 'password';
+    }
+  });
 
-  // span.addEventListener('focus', () => span.classList.add('focused'), true);
-  // span.addEventListener('blur', () => span.classList.remove('focused'), true);
+  spanLoginPassword.addEventListener('focus', () => spanLoginPassword.classList.add('focused'), true);
+  spanLoginPassword.addEventListener('blur', () => spanLoginPassword.classList.remove('focused'), true);
 
-  // loginWithGoogle.addEventListener('click', () => {
-  //   createUserWithGoogle().then((result) => {
-  //     if (result) {
-  //       onNavigate('/home');
-  //     } else {
-  //       errorMessage.innerText = 'You must choose a Google account';
-  //     }
-  //   });
-  // });
-
-  // loginWithTwitter.addEventListener('click', () => {
-  //   createUserWithTwitter().then((result) => {
-  //     if (result) {
-  //       onNavigate('/home');
-  //     } else {
-  //       errorMessage.innerText = 'You must choose a Twitter account';
-  //     }
-  //   });
-  // });
   return globalLogInDiv;
 };

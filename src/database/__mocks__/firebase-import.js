@@ -1,4 +1,6 @@
+
 // eslint-disable-next-line max-classes-per-file
+
 export const initializeApp = (secret) => ({});
 export const getDatabase = (initializeAppObject) => ({});
 export const getAuth = (initializeAppObject) => ({});
@@ -14,6 +16,8 @@ export const createUserWithEmailAndPassword = (auth, email, password) => {
   }
   return Promise.resolve(userCredentials);
 };
+
+export const ref = jest.fn((database, user) => ({}));
 
 export const set = (ref) => ({});
 
@@ -45,3 +49,4 @@ export const signInWithEmailAndPassword = (auth, email, password) => {
 };
 export const ref = jest.fn((database, user) => ({}));
 export const update = (ref) => ({});
+
