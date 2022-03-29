@@ -184,7 +184,6 @@ export const signup = () => {
     }
   });
 
-
   divAccount.addEventListener('click', (event) => {
     if (event) {
       onNavigate('/');
