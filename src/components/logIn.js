@@ -25,10 +25,6 @@ export const login = () => {
   const loginPassword = document.createElement('input');
   const spanLoginPassword = document.createElement('span');
   const imgEyePassword = document.createElement('i');
-  const loginEmail = document.createElement('input');
-  const loginPassword = document.createElement('input');
-  const span = document.createElement('span');
-  const imgEye = document.createElement('i');
   const pForgotPassword = document.createElement('p');
   const errorMessage = document.createElement('div');
   const buttonLogin = document.createElement('button');
@@ -69,22 +65,10 @@ export const login = () => {
   loginEmail.setAttribute('class', 'inputLogin');
   loginEmail.setAttribute('placeholder', 'Email');
   loginEmail.setAttribute('id', 'loginEmail');
-  
+
   spanLoginPassword.setAttribute('class', 'eyePassword');
   imgEyePassword.setAttribute('id', 'imgEyePassword2');
   imgEyePassword.setAttribute('class', 'fa-solid fa-eye');
-
-  loginPassword.setAttribute('type', 'password');
-  loginPassword.setAttribute('placeholder', 'Password');
-  loginPassword.setAttribute('id', 'loginPassword');
-
-  // span.setAttribute('class', 'eye');
-  // imgEye.setAttribute('id', 'imgEye');
-  // imgEye.setAttribute('class', 'fa-solid fa-eye');
-
-  span.setAttribute('class', 'eyePassword');
-  imgEye.setAttribute('id', 'imgEyePassword');
-  imgEye.setAttribute('class', 'fa-solid fa-eye');
 
   pForgotPassword.setAttribute('class', 'pForgotPassword');
   buttonLogin.setAttribute('class', 'buttonLogin');
@@ -110,9 +94,7 @@ export const login = () => {
   pinkTexTwo.innerText = 'Tell us what you think, in a safe space to share ideas.';
   pinkTextThree.innerText = 'Create support networks among women.';
   pLogin.innerText = 'Log in';
-
   pLoginMovil.innerText = 'Log in';
-
   buttonLogin.textContent = 'Login';
   pForgotPassword.innerText = 'Forgot password?';
   loginWithP.innerText = 'Or login with';
@@ -123,13 +105,8 @@ export const login = () => {
   header.appendChild(divLogo);
   header.appendChild(imgLogo);
   divLogo.appendChild(pLogo);
-
   spanLoginPassword.appendChild(loginPassword);
   spanLoginPassword.appendChild(imgEyePassword);
-
-  span.appendChild(loginPassword);
-  span.appendChild(imgEye);
-
   globalContainer.appendChild(pinkContainerLogin);
   globalContainer.appendChild(globalLogInDiv);
   pinkContainerLogin.appendChild(pinkTextOne);
@@ -141,15 +118,9 @@ export const login = () => {
   globalLogInDiv.appendChild(header);
   globalLogInDiv.appendChild(pLogin);
   globalLogInDiv.appendChild(baseLogin);
-
   baseLogin.appendChild(pLoginMovil);
   baseLogin.appendChild(loginEmail);
   baseLogin.appendChild(spanLoginPassword);
-
-  baseLogin.appendChild(loginEmail);
-  baseLogin.appendChild(loginPassword);
-  baseLogin.appendChild(span);
-
   baseLogin.appendChild(pForgotPassword);
   baseLogin.appendChild(buttonLogin);
   baseLogin.appendChild(divLoginWith);
@@ -164,9 +135,6 @@ export const login = () => {
   divButtons.appendChild(loginWithTwitter);
   loginWithGoogle.appendChild(imgGoogle);
   loginWithTwitter.appendChild(imgTwitter);
-
-  // divLoginWith.appendChild(loginWithTwitter);
-
   globalLogInDiv.appendChild(errorMessage);
 
   buttonLogin.addEventListener('click', () => {
