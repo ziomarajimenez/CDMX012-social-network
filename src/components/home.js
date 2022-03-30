@@ -3,8 +3,19 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
-import { post } from '../database/firestore.js';
+import { post, getPost } from '../database/firestore.js';
 import { logOut } from '../database/firebase.js';
+
+const renderPost = async () => {
+  const posts = await getPost();
+  // console.log(posts);
+  const arrayPost = [];
+  posts.forEach((doc) => {
+    arrayPost.push(doc.data());
+    // console.log(doc.data());
+  });
+  return arrayPost;
+};
 
 const postHome = (userlogin, inputHome) => {
   // Elements
@@ -46,9 +57,9 @@ const postHome = (userlogin, inputHome) => {
 
   return postDiv;
 };
-export const home = () => {
+export const home = async () => {
   const userlogin = JSON.parse(sessionStorage.getItem('userData'));
-
+  const arrayPost = await renderPost();
   const divHome = document.createElement('div');
   const imgUser = document.createElement('img');
   const divPosts = document.createElement('div');
@@ -68,6 +79,8 @@ export const home = () => {
   divPosts.setAttribute('class', 'divPosts');
   inputHome.setAttribute('id', 'inputHome');
   inputHome.setAttribute('placeholder', 'Tell us what you are thinking');
+  buttonHome.setAttribute('id', 'buttonHome');
+
   homeHeader.setAttribute('id', 'homeHeader');
   logoHeader.setAttribute('src', '../assets/img/logoymuki.png');
   logoHeader.setAttribute('id', 'logoHeader');
@@ -84,16 +97,22 @@ export const home = () => {
 
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
-  globalContainer.append(homeHeader, divPages);
+  globalContainer.append(homeHeader, divPages, divHome);
   divHome.append(imgUser, inputHome, buttonHome);
+  globalContainer.appendChild(divPosts);
 
+  console.log(arrayPost);
+  arrayPost.forEach((post) => {
+    const postDiv = postHome(userlogin, post.text);
+    divPosts.appendChild(postDiv);
+  });
   buttonHome.textContent = 'Post';
   buttonHome.addEventListener('click', () => {
     const postDiv = postHome(userlogin, inputHome.value);
-    // const toShare = inputHome.value;
-    // post(toShare);
+    const toShare = inputHome.value;
+    post(toShare);
     divPosts.appendChild(postDiv);
-    globalContainer.appendChild(divPosts);
+
     // onNavigate('/home');
   });
 
