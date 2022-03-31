@@ -5,7 +5,7 @@ import {
   signOut,
 } from './firebase-import.js';
 import { firebaseSecret } from './firebase-secret.js';
-
+// import { email, password } from '../components/logIn.js';
 // Initialize Firebase
 const app = initializeApp(firebaseSecret);
 const database = getDatabase(app);
