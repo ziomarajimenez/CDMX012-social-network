@@ -15,8 +15,8 @@ const renderPost = async () => {
     // console.log(doc.data());
   });
   return arrayPost;
-
-  const postHome = (displayName, inputHome) => {
+};
+const postHome = (displayName, inputHome) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -28,6 +28,13 @@ const renderPost = async () => {
   const countAndHeart = document.createElement('div');
   const likesCounter = document.createElement('div');
   const heart = document.createElement('img');
+  const homeHeader = document.createElement('header');
+  const logoHeader = document.createElement('img');
+  const divPages = document.createElement('div');
+  const btnHome = document.createElement('img');
+  const btnProfile = document.createElement('img');
+  const btnNotifications = document.createElement('img');
+  const btnLogout = document.createElement('img');
 
   // Attributes
   postDiv.setAttribute('class', 'postDiv');
@@ -46,7 +53,7 @@ const renderPost = async () => {
   under.setAttribute('id', 'under');
 
   // Iner text
-  postName.innerText = userlogin.displayName;
+  postName.innerText = displayName;
   postText.innerText = inputHome;
   likesCounter.innerText = '5';
 
@@ -57,6 +64,7 @@ const renderPost = async () => {
 
   return postDiv;
 };
+
 export const home = async () => {
   const userlogin = JSON.parse(sessionStorage.getItem('userData'));
   const arrayPost = await renderPost();
@@ -98,7 +106,6 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(imgUser, inputHome, buttonHome);
-  
   console.log(arrayPost);
   arrayPost.forEach((post) => {
     const postDiv = postHome(post.displayName, post.text);

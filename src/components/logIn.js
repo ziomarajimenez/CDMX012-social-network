@@ -137,9 +137,9 @@ export const login = () => {
   loginWithTwitter.appendChild(imgTwitter);
   globalLogInDiv.appendChild(errorMessage);
 
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
   buttonLogin.addEventListener('click', () => {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
     loginUserWithEmail(email, password).then((userCredential) => {
       if (userCredential) {
         onNavigate('/home');
