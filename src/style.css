@@ -220,7 +220,6 @@
     display:none;
   }
   
-  
   /* Vista Log In */
   
   .globalLogInDiv{
@@ -232,28 +231,35 @@
     height: 100%;
     margin-top: 50px;
     }
-    .baseLogin{
-    background-color:#ffffff;
+
+  .baseLogin{
+    background-color:#F4F7FE;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
+    height: 80%;
     margin-top: 100px;
-    border-radius: 10px;
+    border-radius: 20px;
   }
   
-  .pLogin{
+  .pLoginMovil{
   color:rgba(0, 0, 0, 0.38);
-  font-size: 30px;
+  font-size: 25px;
   margin-top: 5px;
   text-shadow: .5px .5px #9e9e9e;
+  font-weight: bold;
+  }
+
+  .pLogin{
+    display: none;
   }
   
   .inputLogin {
     text-align: center;
     border-radius: 5px;
-    width: 200px;
+    width: 250px;
     height: 38px;
     margin: 5px;
     border: 1px solid rgba(0, 0, 0, 0.38);
@@ -261,28 +267,40 @@
     transition: 0.5s;
     outline: none;
     margin:35px 0px 8px;
-    align-items: center;
-    justify-content: center;
+  }
+
+  .focused {
+    border: 3px solid #eca05f;
   }
   
-  #loginEmail{
+  #loginEmail::placeholder {
     background: url("./assets/img/email.png");
-    background-size: 24px;
+    background-size: 20px;
     background-repeat: no-repeat;
-    background-position: 38px;
+    background-position: 43px 3px;
     color: #00000080;
-    border-radius: 5px;
   }
   
-  #loginPassword{
+  #loginPassword::placeholder {
     background: url("./assets/img/lock.png");
     background-size: 47px;
     background-repeat: no-repeat;
-    background-position: 28px;
+    background-position: 3px 3px;
     color: #00000080;
   }
+
+  #loginPassword{
+    border: 0;
+    width: 80%;
+    height: 100%;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.5s;
+    outline: none;
+    margin: 0;
+  }
   
-  .eye {
+  .eyePassword {
     position: relative;
     text-align: center;
     border-radius: 5px;
@@ -293,14 +311,14 @@
     font-weight: bold;
     transition: 0.5s;
     margin: 8px 0px 8px;
-    background-color: #ffffffd0;
+    background-color: #ffffff;
   }
   
   .focused {
     border: 3px solid #eca05f;
   }
   
-  #imgEye {
+  #imgEyePassword2 {
     position: absolute;
     right: 10px;
     top: 55%;
@@ -319,7 +337,7 @@
     border-radius: 30px;
     width: 100px;
     height: 45px;
-    margin: 35px 0px 15px;
+    margin: 35px 0px 30px;
     border: 1px solid rgba(0, 0, 0, 0.38);
     color: white;
     font-weight: bold;
@@ -333,8 +351,6 @@
     display:flex;
     flex-direction: column;
     font-weight: bold; 
-    margin-top: 25px;
-    gap:30px;
     align-self: center;
   }
   
@@ -572,8 +588,8 @@
       position: relative;
       text-align: center;
       border-radius: 5px;
-      width: 350px;
-      height: 70px;
+      width: 250px;
+      height: 38px;
       margin: 5px;
       border: 1px solid rgba(0, 0, 0, 0.38);
       font-weight: bold;
@@ -670,7 +686,6 @@
     p {
       margin: 0px 5px 0px 5px;
     }
-
     
     /* VISTA LOGIN DESKTOP */
     * {
@@ -686,18 +701,18 @@
       overflow: hidden;
     }
   
-  #globalConteiner{
+    #globalConteiner{
     display: flex;
     margin:0;
     padding:0;
   }
-  header {
+
+    header {
     display: absolute;
     flex-direction: row-reverse;
     justify-content: center;
     text-align: center;
     margin-right: 210%;
-    
   }
 
   #divLogo {
@@ -716,7 +731,6 @@
     flex-direction: column;
     display: flex;
     justify-content: center;
-
   }
 
   .pinkTextOneAndThree{
@@ -765,9 +779,13 @@
     font-weight: bold;
     margin-top: -25%;
   }
+
+  .pLoginMovil{
+    display: none;
+  }
     
   .baseLogin{
-  background-color:#ffffff;
+  background-color: #F4F7FE;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -778,39 +796,24 @@
   border-radius: 10px;
 }
 
-.inputLogin {
-  text-align: center;
-  border-radius: 5px;
-  width: 250px;
-  height: 40px;
-  margin: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.38);
-  font-weight: bold;
-  transition: 0.5s;
-  outline: none;
-  margin:35px 0px 8px;
-  align-items: center;
-  justify-content: center;
-}
-    
-#loginEmail{
+/* .inputLogin:focus {
+  border: 3px solid #eca05f;
+} */
+
+/* .focused {
+  border: 3px solid #eca05f;
+} */
+
+#loginEmail::placeholder {
   background: url("./assets/img/email.png");
-  background-size: 24px;
+  background-size: 20px;
   background-repeat: no-repeat;
-  background-position: 38px;
+  background-position: 43px 3px;
   color: #00000080;
-  border-radius: 5px;
+
 }
     
-#loginPassword{
-  background: url("./assets/img/lock.png");
-  background-size: 47px;
-  background-repeat: no-repeat;
-  background-position: 28px;
-  color: #00000080;
-}
-    
-.eye {
+.eyePassword {
   position: relative;
   text-align: center;
   border-radius: 5px;
@@ -821,14 +824,46 @@
   font-weight: bold;
   transition: 0.5s;
   margin: 8px 0px 8px;
-  background-color: #ffffffd0;
+  background-color: #ffffff;
+}
+
+.inputLogin {
+  text-align: center;
+  border-radius: 5px;
+  width: 250px;
+  height: 38px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.38);
+  font-weight: bold;
+  transition: 0.5s;
+  outline: none;
+  margin:35px 0px 8px;
 }
     
-.focused {
+ .focused {
   border: 3px solid #eca05f;
 }
 
-#imgEye {
+#loginPassword::placeholder {
+  background: url("./assets/img/lock.png");
+  background-size: 47px;
+  background-repeat: no-repeat;
+  background-position: 3px 3px;
+  color: #00000080;
+}
+
+#loginPassword{
+  border: 0;
+  width: 80%;
+  height: 100%;
+  text-align: center;
+  font-weight: bold;
+  transition: 0.5s;
+  outline: none;
+  margin: 0;
+}
+
+#imgEyePassword2 {
   position: absolute;
   right: 10px;
   top: 55%;
@@ -847,7 +882,7 @@
   border-radius: 30px;
   width: 100px;
   height: 45px;
-  margin: 35px 0px 15px;
+  margin: 35px 0px 30px;
   border: 1px solid rgba(0, 0, 0, 0.38);
   color: white;
   font-weight: bold;
@@ -861,8 +896,8 @@
   display:flex;
   flex-direction: column;
   font-weight: bold; 
-  margin-top: 25px;
-  gap:30px;
+  /* margin-top: 25px;
+  gap:30px; */
   align-self: center;
 }
     
