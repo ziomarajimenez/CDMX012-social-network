@@ -13,7 +13,7 @@ export const routes = {
 };
 
 // To navigate in diferent pathnames
-export const onNavigate = (pathname) => {
+export const onNavigate = async (pathname) => {
   window.history.pushState(
     {},
     pathname,
@@ -22,15 +22,16 @@ export const onNavigate = (pathname) => {
   while (rootDiv.firstChild) {
     rootDiv.removeChild(rootDiv.firstChild);
   }
-
-  rootDiv.appendChild(routes[pathname]());
+  const divPage = await routes[pathname]();
+  rootDiv.appendChild(divPage);
 };
 
-window.onpopstate = () => {
+window.onpopstate = async () => {
   while (rootDiv.firstChild) {
     rootDiv.removeChild(rootDiv.firstChild);
   }
-  rootDiv.appendChild(routes[window.location.pathname]());
+  const divPage = await routes[window.location.pathname]();
+  rootDiv.appendChild(divPage);
 };
 
 const auth = getAuth();
@@ -41,7 +42,7 @@ onAuthStateChanged(auth, (user) => {
     sessionStorage.setItem('userData', JSON.stringify(userlogin));
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-    onNavigate('/home');
+    // onNavigate('/home');
     // ...
   } else {
     onNavigate('/');
@@ -49,4 +50,10 @@ onAuthStateChanged(auth, (user) => {
 });
 
 const component = routes[window.location.pathname];
-rootDiv.appendChild(component());
+
+const renderRootDiv = async () => {
+  const divPage = await component();
+  rootDiv.appendChild(divPage);
+};
+
+renderRootDiv();

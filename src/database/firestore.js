@@ -1,17 +1,19 @@
 import {
-  getFirestore, collection, addDoc, getAuth, serverTimestamp,
+  getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs,
 } from './firebase-import.js';
+
 const db = getFirestore();
 
-export const post = (text) => {
+export const post = (text, displayName) => {
   const db = getFirestore();
   const auth = getAuth();
   const userlogin = auth.currentUser;
   const uid = userlogin.uid;
   addDoc(collection(db, 'Posts'), {
-    text, uid, likes: [], timestamp: serverTimestamp(),
+    displayName, text, uid, likes: [], timestamp: serverTimestamp(),
   });
 };
+export const getPost = () => getDocs(collection(db, 'Posts'));
 
 // const publi = doc(db, 'Posts');
 // console.log(publi);
