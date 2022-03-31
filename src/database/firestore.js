@@ -9,8 +9,9 @@ export const post = (text) => {
   const auth = getAuth();
   const userlogin = auth.currentUser;
   const uid = userlogin.uid;
+  const displayName = userlogin.displayName;
   addDoc(collection(db, 'Posts'), {
-    text, uid, likes: [], timestamp: serverTimestamp(),
+    text, uid, displayName, likes: [], timestamp: serverTimestamp(),
   });
 };
 export const getPost = () => getDocs(collection(db, 'Posts'));

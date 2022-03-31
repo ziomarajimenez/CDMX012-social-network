@@ -45,6 +45,7 @@ const postHome = (userlogin, inputHome) => {
   countAndHeart.setAttribute('id', 'countAndHeart');
   heart.setAttribute('id', 'heart');
   under.setAttribute('id', 'under');
+
   // Iner text
   postName.innerText = userlogin.displayName;
   postText.innerText = inputHome;
@@ -59,6 +60,7 @@ const postHome = (userlogin, inputHome) => {
 };
 export const home = async () => {
   const userlogin = JSON.parse(sessionStorage.getItem('userData'));
+  console.log(userlogin);
   const arrayPost = await renderPost();
   const divHome = document.createElement('div');
   const imgUser = document.createElement('img');
@@ -97,15 +99,19 @@ export const home = async () => {
 
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
-  globalContainer.append(homeHeader, divPages, divHome);
   divHome.append(imgUser, inputHome, buttonHome);
-  globalContainer.appendChild(divPosts);
-
   console.log(arrayPost);
+
   arrayPost.forEach((post) => {
     const postDiv = postHome(userlogin, post.text);
     divPosts.appendChild(postDiv);
   });
+
+  globalContainer.appendChild(homeHeader);
+  globalContainer.appendChild(divPages);
+  globalContainer.appendChild(divHome);
+  globalContainer.appendChild(divPosts);
+
   buttonHome.textContent = 'Post';
   buttonHome.addEventListener('click', () => {
     const postDiv = postHome(userlogin, inputHome.value);
@@ -121,5 +127,5 @@ export const home = async () => {
       onNavigate('/');
     });
   });
-  return divHome;
+  // return divHome;
 };
