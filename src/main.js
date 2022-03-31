@@ -37,7 +37,8 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const userlogin = auth.currentUser;
-    console.log(userlogin);
+
+    sessionStorage.setItem('userData', JSON.stringify(userlogin));
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     onNavigate('/home');
