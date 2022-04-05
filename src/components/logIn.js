@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 // // eslint-disable-next-line import/no-cycle
 import { onNavigate } from '../main.js';
-import { loginUserWithEmail, LoginUserWithGoogle, loginUserWithTwitter } from '../database/firebase.js';
+import { loginUserWithEmail, loginUserWithGoogle, loginUserWithTwitter } from '../database/firebase.js';
 
 export const login = () => {
   // elements
@@ -137,9 +137,9 @@ export const login = () => {
   loginWithTwitter.appendChild(imgTwitter);
   globalLogInDiv.appendChild(errorMessage);
 
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
   buttonLogin.addEventListener('click', () => {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
     loginUserWithEmail(email, password).then((userCredential) => {
       if (userCredential) {
         onNavigate('/home');
@@ -150,7 +150,7 @@ export const login = () => {
   });
 
   loginWithGoogle.addEventListener('click', () => {
-    LoginUserWithGoogle().then((result) => {
+    loginUserWithGoogle().then((result) => {
       if (result) {
         onNavigate('/home');
       }

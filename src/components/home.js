@@ -9,7 +9,7 @@ import { post, getPost } from '../database/firestore.js';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
-const renderPost = async () => {
+export const renderPost = async () => {
   const posts = await getPost();
   const arrayPost = [];
   posts.forEach((doc) => {
@@ -20,7 +20,14 @@ const renderPost = async () => {
   return arrayPost;
 };
 
-const postHome = (displayName, inputHome) => {
+// const postHome = (displayName, inputHome) => {
+//     arrayPost.push(doc.data());
+//     // console.log(JSON.stringify(doc.data()));
+//   });
+//   return arrayPost;
+// };
+
+export const postHome = (displayName, inputHome) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -164,7 +171,7 @@ export const home = async () => {
     const postDiv = postHome(userlogin.displayName, inputHome.value);
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
-    divPosts.appendChild(postDiv);
+    divPosts.insertBefore(postDiv, divPosts.firstChild);
     inputHome.value = '';
     // onNavigate('/home');
   });

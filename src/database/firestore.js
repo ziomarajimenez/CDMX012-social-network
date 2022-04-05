@@ -1,5 +1,5 @@
 import {
-  getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs,
+  getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs, query, where, orderBy,
 } from './firebase-import.js';
 
 export const db = getFirestore();
@@ -15,7 +15,14 @@ export const post = (text, displayName) => {
 };
 
 // const q = query(getPost, orderBy('timestamp'));
-export const getPost = () => getDocs(collection(db, 'Posts'));
+//export const getPost = () => getDocs(collection(db, 'Posts'));
+
+export const getPost = async () => {
+  const postRef = collection(db, 'Posts');
+  const orderPost = await getDocs(query(postRef, orderBy('timestamp', 'desc')));
+  return orderPost;
+};
+
 
 // export async function getPostInOrder() {
 //   try {
