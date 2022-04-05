@@ -6,6 +6,7 @@ import {
 } from './firebase-import.js';
 import { firebaseSecret } from './firebase-secret.js';
 // import { email, password } from '../components/logIn.js';
+
 // Initialize Firebase
 const app = initializeApp(firebaseSecret);
 const database = getDatabase(app);
@@ -63,7 +64,7 @@ export const createUserWithTwitter = async () => {
   return userCreateTwitter;
 };
 
-export const loginUserWithEmail = async () => {
+export const loginUserWithEmail = async (email, password) => {
   const auth = getAuth();
   let loginWithEmail;
   try {
@@ -80,7 +81,7 @@ export const loginUserWithEmail = async () => {
   return loginWithEmail;
 };
 
-export const LoginUserWithGoogle = async () => {
+export const loginUserWithGoogle = async () => {
   const auth = getAuth();
   let loginWithGoogle;
   const provider = new GoogleAuthProvider();
@@ -95,10 +96,6 @@ export const LoginUserWithGoogle = async () => {
     });
     loginWithGoogle = true;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const email = error.email;
-    const credential = GoogleAuthProvider.credentialFromError(error);
     loginWithGoogle = false;
   }
   return loginWithGoogle;
@@ -112,7 +109,7 @@ export const loginUserWithTwitter = async () => {
     const userCredential = await signInWithPopup(auth, provider2);
     const credential = TwitterAuthProvider.credentialFromResult(userCredential);
     const token = credential.accessToken;
-    const secret = credential.secret;
+    // const secret = credential.secret;
     const user = userCredential.user;
     const dt = new Date();
     update(ref(database, `users/${user.uid}`), {
@@ -120,10 +117,6 @@ export const loginUserWithTwitter = async () => {
     });
     loginWithTwitter = true;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const email = error.email;
-    const credential = TwitterAuthProvider.credentialFromError(error);
     loginWithTwitter = false;
   }
   return loginWithTwitter;
