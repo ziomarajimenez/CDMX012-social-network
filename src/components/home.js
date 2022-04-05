@@ -6,17 +6,16 @@ import { onNavigate } from '../main.js';
 import { post, getPost } from '../database/firestore.js';
 import { logOut } from '../database/firebase.js';
 
-const renderPost = async () => {
+export const renderPost = async () => {
   const posts = await getPost();
-  // console.log(posts);
   const arrayPost = [];
   posts.forEach((doc) => {
     arrayPost.push(doc.data());
-    // console.log(doc.data());
+    // console.log(JSON.stringify(doc.data()));
   });
   return arrayPost;
 };
-const postHome = (displayName, inputHome) => {
+export const postHome = (displayName, inputHome) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -122,7 +121,7 @@ export const home = async () => {
     const postDiv = postHome(userlogin.displayName, inputHome.value);
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
-    divPosts.appendChild(postDiv);
+    divPosts.insertBefore(postDiv, divPosts.firstChild);
     inputHome.value = '';
     // onNavigate('/home');
   });
