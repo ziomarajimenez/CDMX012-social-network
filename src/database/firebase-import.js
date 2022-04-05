@@ -9,4 +9,5 @@ export {
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
 export {
   getFirestore, collection, addDoc, getDocs, getDoc, serverTimestamp, doc, increment,
+  deleteDoc,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';
