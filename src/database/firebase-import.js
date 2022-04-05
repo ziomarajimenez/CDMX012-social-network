@@ -10,5 +10,6 @@ export {
   getRedirectResult, signOut, onAuthStateChanged,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
 export {
-  getFirestore, collection, addDoc, getDocs, getDoc, serverTimestamp, doc, increment, query, where, orderBy,
+  getFirestore, collection, addDoc, getDocs, getDoc, serverTimestamp, doc, increment,
+  deleteDoc,  query, where, orderBy,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';

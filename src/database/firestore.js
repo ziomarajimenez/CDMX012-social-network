@@ -2,7 +2,7 @@ import {
   getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs, query, where, orderBy,
 } from './firebase-import.js';
 
-const db = getFirestore();
+export const db = getFirestore();
 
 export const post = (text, displayName) => {
   const db = getFirestore();
@@ -13,11 +13,27 @@ export const post = (text, displayName) => {
     displayName, text, uid, likes: [], timestamp: serverTimestamp(),
   });
 };
+
+// const q = query(getPost, orderBy('timestamp'));
+//export const getPost = () => getDocs(collection(db, 'Posts'));
+
 export const getPost = async () => {
   const postRef = collection(db, 'Posts');
   const orderPost = await getDocs(query(postRef, orderBy('timestamp', 'desc')));
   return orderPost;
 };
+
+
+// export async function getPostInOrder() {
+//   try {
+//     const q = query(collection(db, 'Posts'), orderBy("timestamp"));
+//     const querySnapshot = await getDocs(q);
+//     return querySnapshot;
+//   } catch (e) {
+//     console.error('Error adding document: ', e);
+//   }
+//   getPostInOrder();
+// }
 
 // const publi = doc(db, 'Posts');
 // console.log(publi);
