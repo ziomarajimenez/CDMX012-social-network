@@ -23,5 +23,7 @@ export const getPost = async () => {
   const orderPost = await getDocs(query(postRef, orderBy('timestamp', 'desc')));
   return orderPost;
 };
+
 export const getPostEdit = (id) => getDoc(doc(db, 'Posts', id));
 export const updateText = (id, newFields) => updateDoc(doc(db, 'Posts', id), newFields);
+
