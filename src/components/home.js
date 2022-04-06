@@ -3,7 +3,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
-import { post, getPost, db } from '../database/firestore.js';
+
+import { post, getPost, db,  getPostEdit, updateText } from '../database/firestore.js';
 import { doc, deleteDoc } from '../database/firebase-import.js';
 
 import { logOut } from '../database/firebase.js';
@@ -66,6 +67,7 @@ export const postHome = (displayName, inputHome, isOwner, postId) => {
   options.setAttribute('id', 'options');
   update.setAttribute('type', 'button');
   update.setAttribute('id', 'update');
+  update.setAttribute('data-id', id);
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
@@ -92,6 +94,21 @@ export const postHome = (displayName, inputHome, isOwner, postId) => {
     postText.removeAttribute('disabled');
     cancel.style.display = 'block';
     update.style.display = 'block';
+  });
+  update.addEventListener('click', async (event) => {
+    postText.setAttribute('disabled', 'true');
+    cancel.style.display = 'none';
+    update.style.display = 'none';
+    const docId = event.target.dataset.id;
+    const postEdit = await getPostEdit(docId);
+    const postData = postEdit.data();
+
+    postData.text = postText.value;
+    // console.log(postData);
+    updateText(
+      docId,
+      postData,
+    );
   });
 
   cancel.addEventListener('click', () => {
@@ -159,7 +176,7 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
-  console.log(arrayPost);
+  
   const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
     const isOwner = actualUser.uid === post.uid;
@@ -174,7 +191,8 @@ export const home = async () => {
   globalContainer.appendChild(displayHome);
 
   btnPost.addEventListener('click', () => {
-    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null);
+    // actualizar el código para recibir el id de firestore
+    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null, 'id 1234' );
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
     divPosts.insertBefore(postDiv, divPosts.firstChild);

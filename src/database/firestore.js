@@ -1,5 +1,6 @@
+/* eslint-disable import/named */
 import {
-  getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs, query, orderBy,
+  getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs, query, orderBy, getDoc, doc, updateDoc,
 } from './firebase-import.js';
 
 export const db = getFirestore();
@@ -15,7 +16,7 @@ export const post = (text, displayName) => {
 };
 
 // const q = query(getPost, orderBy('timestamp'));
-//export const getPost = () => getDocs(collection(db, 'Posts'));
+// export const getPost = () => getDocs(collection(db, 'Posts'));
 
 export const getPost = async () => {
   const postRef = collection(db, 'Posts');
@@ -23,29 +24,6 @@ export const getPost = async () => {
   return orderPost;
 };
 
-// export async function getPostInOrder() {
-//   try {
-//     const q = query(collection(db, 'Posts'), orderBy("timestamp"));
-//     const querySnapshot = await getDocs(q);
-//     return querySnapshot;
-//   } catch (e) {
-//     console.error('Error adding document: ', e);
-//   }
-//   getPostInOrder();
-// }
+export const getPostEdit = (id) => getDoc(doc(db, 'Posts', id));
+export const updateText = (id, newFields) => updateDoc(doc(db, 'Posts', id), newFields);
 
-// const publi = doc(db, 'Posts');
-// console.log(publi);
-
-// import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
-// const db = getFirestore();
-// // Add a new document in collection "cities"
-// export const post = async (text) => {
-//   const uid = userlogin.uid;
-//   await setDoc(doc(db, 'Posteo'), {
-//     text,
-//     uid,
-//     likes: [],
-//     timestamp: serverTimestamp(),
-//   });
-// };
