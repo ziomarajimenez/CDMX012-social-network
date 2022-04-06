@@ -28,7 +28,7 @@ export const renderPost = async () => {
 //   return arrayPost;
 // };
 
-export const postHome = (displayName, inputHome, isOwner, postId) => {
+export const postHome = (displayName, inputHome, isOwner, postId, id) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
