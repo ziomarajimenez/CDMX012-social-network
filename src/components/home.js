@@ -5,9 +5,9 @@
 import { onNavigate } from '../main.js';
 
 import {
-  post, getPost, getPostEdit, updateText, db
+  post, getPost, getPostEdit, updateText, db,
 } from '../database/firestore.js';
-import { doc, deleteDoc } from '../database/firebase-import';
+import { doc, deleteDoc } from '../database/firebase-import.js';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
@@ -22,15 +22,7 @@ export const renderPost = async () => {
   return arrayPost;
 };
 
-// const postHome = (displayName, inputHome) => {
-//     arrayPost.push(doc.data());
-//     // console.log(JSON.stringify(doc.data()));
-//   });
-//   return arrayPost;
-// };
-
-
-export const postHome = (displayName, inputHome, isOwner, postId, id) => {
+export const postHome = (displayName, inputHome, isOwner, postId) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -69,7 +61,7 @@ export const postHome = (displayName, inputHome, isOwner, postId, id) => {
   options.setAttribute('id', 'options');
   update.setAttribute('type', 'button');
   update.setAttribute('id', 'update');
-  update.setAttribute('data-id', id);
+  update.setAttribute('data-id', postId);
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
@@ -88,7 +80,7 @@ export const postHome = (displayName, inputHome, isOwner, postId, id) => {
   // Append
   countAndHeart.append(likesCounter, heart);
   under.append(countAndHeart, cancel, update);
-  options.appendChild(imgPost)
+  options.appendChild(imgPost);
   if (isOwner) { options.append(editPost, deletePost); }
   postDiv.append(options, postName, postText, under);
 
@@ -102,6 +94,7 @@ export const postHome = (displayName, inputHome, isOwner, postId, id) => {
     cancel.style.display = 'none';
     update.style.display = 'none';
     const docId = event.target.dataset.id;
+    console.log(event);
     const postEdit = await getPostEdit(docId);
     const postData = postEdit.data();
 
@@ -178,7 +171,6 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
-  
   console.log(arrayPost);
   const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
