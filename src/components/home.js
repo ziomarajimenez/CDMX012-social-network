@@ -3,9 +3,11 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
-import { post, getPost, db } from '../database/firestore.js';
-import { doc, deleteDoc } from '../database/firebase-import.js';
 
+import {
+  post, getPost, getPostEdit, updateText, db
+} from '../database/firestore.js';
+import { doc, deleteDoc } from '../database/firebase-import';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
@@ -27,7 +29,8 @@ export const renderPost = async () => {
 //   return arrayPost;
 // };
 
-export const postHome = (displayName, inputHome, isOwner, postId) => {
+
+export const postHome = (displayName, inputHome, isOwner, postId, id) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -66,6 +69,7 @@ export const postHome = (displayName, inputHome, isOwner, postId) => {
   options.setAttribute('id', 'options');
   update.setAttribute('type', 'button');
   update.setAttribute('id', 'update');
+  update.setAttribute('data-id', id);
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
@@ -92,6 +96,21 @@ export const postHome = (displayName, inputHome, isOwner, postId) => {
     postText.removeAttribute('disabled');
     cancel.style.display = 'block';
     update.style.display = 'block';
+  });
+  update.addEventListener('click', async (event) => {
+    postText.setAttribute('disabled', 'true');
+    cancel.style.display = 'none';
+    update.style.display = 'none';
+    const docId = event.target.dataset.id;
+    const postEdit = await getPostEdit(docId);
+    const postData = postEdit.data();
+
+    postData.text = postText.value;
+    // console.log(postData);
+    updateText(
+      docId,
+      postData,
+    );
   });
 
   cancel.addEventListener('click', () => {
@@ -159,6 +178,7 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
+  
   console.log(arrayPost);
   const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
@@ -174,7 +194,7 @@ export const home = async () => {
   globalContainer.appendChild(displayHome);
 
   btnPost.addEventListener('click', () => {
-    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null);
+    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null, 'id 1234');
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
     divPosts.insertBefore(postDiv, divPosts.firstChild);
