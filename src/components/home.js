@@ -3,11 +3,11 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
-import {
-  post, getPost, getPostEdit, updateText,
-} from '../database/firestore.js';
-// import { doc, deleteDoc } from '../database/firebase-import';
 
+import {
+  post, getPost, getPostEdit, updateText, db
+} from '../database/firestore.js';
+import { doc, deleteDoc } from '../database/firebase-import';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
@@ -29,7 +29,8 @@ export const renderPost = async () => {
 //   return arrayPost;
 // };
 
-export const postHome = (displayName, inputHome, id) => {
+
+export const postHome = (displayName, inputHome, isOwner, postId, id) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -64,6 +65,7 @@ export const postHome = (displayName, inputHome, id) => {
   editPost.setAttribute('id', 'editPost');
   deletePost.setAttribute('src', '../assets/img/delete.png');
   deletePost.setAttribute('id', 'deletePost');
+  deletePost.setAttribute('postId', postId);
   options.setAttribute('id', 'options');
   update.setAttribute('type', 'button');
   update.setAttribute('id', 'update');
@@ -86,7 +88,8 @@ export const postHome = (displayName, inputHome, id) => {
   // Append
   countAndHeart.append(likesCounter, heart);
   under.append(countAndHeart, cancel, update);
-  options.append(imgPost, editPost, deletePost);
+  options.appendChild(imgPost)
+  if (isOwner) { options.append(editPost, deletePost); }
   postDiv.append(options, postName, postText, under);
 
   editPost.addEventListener('click', () => {
@@ -117,12 +120,14 @@ export const postHome = (displayName, inputHome, id) => {
   });
 
   // Create the modal
-  deletePost.addEventListener('click', () => {
-    createModal();
-    // document.getElementById('btnDelete').addEventListener('click', async () => {
-    //   await deleteDoc(doc(db, 'Posts', 'id'));
 
-    // });
+  deletePost.addEventListener('click', (event) => {
+    createModal();
+    console.log(event.srcElement.attributes.postId.nodeValue);
+    document.getElementById('btnDelete').addEventListener('click', async () => {
+      await deleteDoc(doc(db, 'Posts', event.srcElement.attributes.postId.nodeValue));
+      document.location.reload();
+    });
   });
   return postDiv;
 };
@@ -173,9 +178,12 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
-  // console.log(arrayPost);
+  
+  console.log(arrayPost);
+  const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
-    const postDiv = postHome(post.displayName, post.text, post.id);
+    const isOwner = actualUser.uid === post.uid;
+    const postDiv = postHome(post.displayName, post.text, isOwner, post.id);
     divPosts.appendChild(postDiv);
   });
 
@@ -186,12 +194,12 @@ export const home = async () => {
   globalContainer.appendChild(displayHome);
 
   btnPost.addEventListener('click', () => {
-    // actualizar el código para recibir el id de firestore
-    const postDiv = postHome(userlogin.displayName, inputHome.value, 'id 1234');
+    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null, 'id 1234');
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
     divPosts.insertBefore(postDiv, divPosts.firstChild);
     inputHome.value = '';
+    // document.location.reload();
     // onNavigate('/home');
   });
 
