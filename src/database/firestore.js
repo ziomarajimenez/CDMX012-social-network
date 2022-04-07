@@ -1,5 +1,6 @@
 import {
   getFirestore, collection, addDoc, getAuth, serverTimestamp, getDocs, query, where, orderBy,
+  updateDoc, doc, arrayUnion, arrayRemove,
 } from './firebase-import.js';
 
 export const db = getFirestore();
@@ -15,7 +16,7 @@ export const post = (text, displayName) => {
 };
 
 // const q = query(getPost, orderBy('timestamp'));
-//export const getPost = () => getDocs(collection(db, 'Posts'));
+// export const getPost = () => getDocs(collection(db, 'Posts'));
 
 export const getPost = async () => {
   const postRef = collection(db, 'Posts');
@@ -23,6 +24,37 @@ export const getPost = async () => {
   return orderPost;
 };
 
+// const data = collection
+export const likes = async (postId) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+    const userId = user.uid;
+    const postCollection = doc(db, 'Posts', postId);
+    await updateDoc(postCollection, {
+      likes: arrayUnion(userId),
+    });
+    console.log('si dio like');
+  }
+};
+
+export const dislike = async (postId) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+    const userId = user.uid;
+    const postCollection = doc(db, 'Posts', postId);
+    // console.log(postCollection);
+    await updateDoc(postCollection, {
+      likes: arrayRemove(userId),
+    });
+    console.log('Quitó el like');
+  }
+};
+
+export const likeCounter = () => getDoc(collection(db, 'Posts'), {
+  likes: [],
+});
 
 // export async function getPostInOrder() {
 //   try {

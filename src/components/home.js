@@ -3,23 +3,36 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
-import { post, getPost } from '../database/firestore.js';
+import {
+  post, getPost, likes, dislike,
+} from '../database/firestore.js';
 // import { doc, deleteDoc } from '../database/firebase-import';
 
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
+// export const renderPost = async () => {
+//   const posts = await getPost();
+//   const arrayPost = [];
+//   posts.forEach((doc) => {
+//     const localDoc = { ...doc.data() };
+//     localDoc.id = doc.id;
+//     arrayPost.push(localDoc);
+//   });
+//   return arrayPost;
+// };
+
+let localDoc;
 export const renderPost = async () => {
   const posts = await getPost();
   const arrayPost = [];
   posts.forEach((doc) => {
-    const localDoc = { ...doc.data()};
+    localDoc = { ...doc.data() };
     localDoc.id = doc.id;
     arrayPost.push(localDoc);
   });
   return arrayPost;
 };
-
 // const postHome = (displayName, inputHome) => {
 //     arrayPost.push(doc.data());
 //     // console.log(JSON.stringify(doc.data()));
@@ -27,7 +40,7 @@ export const renderPost = async () => {
 //   return arrayPost;
 // };
 
-export const postHome = (displayName, inputHome) => {
+export const postHome = (displayName, inputHome, postId, postLikes) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -39,6 +52,7 @@ export const postHome = (displayName, inputHome) => {
   const countAndHeart = document.createElement('div');
   const likesCounter = document.createElement('div');
   const heart = document.createElement('img');
+  const heartWithLike = document.createElement('img');
   const homeHeader = document.createElement('header');
   const logoHeader = document.createElement('img');
   const divPages = document.createElement('div');
@@ -68,15 +82,24 @@ export const postHome = (displayName, inputHome) => {
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
+  // likesCounter.setAttribute('postId', postId);
   heart.setAttribute('src', '../assets/img/heart.png');
+  heart.setAttribute('postId', postId);
   countAndHeart.setAttribute('id', 'countAndHeart');
   heart.setAttribute('id', 'heart');
+  heart.setAttribute('class', 'heartLike');
+  heart.setAttribute('type', 'submit');
+  heartWithLike.setAttribute('src', '../assets/img/like.png');
+  heartWithLike.setAttribute('postId', postId);
+  heartWithLike.setAttribute('id', 'heartWithLike');
+  heartWithLike.setAttribute('class', 'dislike');
+  heartWithLike.setAttribute('type', 'submit');
   under.setAttribute('id', 'under');
 
   // Iner text
   postName.innerText = displayName;
   postText.innerText = inputHome;
-  likesCounter.innerText = '5';
+  likesCounter.innerText = postLikes.length;
   update.innerText = 'Update';
   cancel.innerText = 'Cancel';
 
@@ -105,6 +128,26 @@ export const postHome = (displayName, inputHome) => {
     //   await deleteDoc(doc(db, 'Posts', 'id'));
 
     // });
+  });
+
+  const actualUser = JSON.parse(sessionStorage.getItem('userData'));
+  const containsLikes = postLikes.includes(actualUser.uid);
+  if (containsLikes) {
+    // heart.src = '../assets/img/like.png';
+    countAndHeart.removeChild(heart);
+    countAndHeart.appendChild(heartWithLike);
+  }
+  heart.addEventListener('click', (event) => {
+    likes(event.srcElement.attributes.postid.nodeValue);
+    heart.style.display = 'none';
+    countAndHeart.appendChild(heartWithLike);
+  });
+
+  heartWithLike.addEventListener('click', (event) => {
+    dislike(event.srcElement.attributes.postid.nodeValue);
+    countAndHeart.removeChild(heartWithLike);
+    heart.style.display = 'block';
+    // document.location.reload();
   });
   return postDiv;
 };
@@ -157,7 +200,7 @@ export const home = async () => {
   divHome.append(inputHome, btnPost);
   console.log(arrayPost);
   arrayPost.forEach((post) => {
-    const postDiv = postHome(post.displayName, post.text);
+    const postDiv = postHome(post.displayName, post.text, post.id, post.likes);
     divPosts.appendChild(postDiv);
   });
 

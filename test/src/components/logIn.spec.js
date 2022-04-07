@@ -30,7 +30,7 @@ describe('loginUserWithGoogle', () => {
     expect(typeof loginUserWithGoogle).toBe('function');
   });
   it('Should return true', async () => {
-    signInWithPopup.mockResolvedValue();
+    // signInWithPopup.mockResolvedValue();
     const login = await loginUserWithGoogle();
     expect(login).toBe(true);
   });
@@ -46,12 +46,12 @@ describe('loginUserWithTwitter', () => {
     expect(typeof loginUserWithTwitter).toBe('function');
   });
   it('Should return true', async () => {
-    signInWithPopup.mockResolvedValue();
+    // signInWithPopup.mockResolvedValue();
     const login = await loginUserWithTwitter();
     expect(login).toBe(true);
   });
   it('Should return false', async () => {
-    signInWithPopup.mockRejectedValue();
+    // signInWithPopup.mockRejectedValue();
     const login = await loginUserWithTwitter();
     expect(login).toBe(false);
   });

@@ -23,8 +23,28 @@ export const set = (ref) => ({});
 //   }
 // }
 
-export const signInWithPopup = jest.fn((auth, provider) => Promise.resolve({}));
+export const signInWithPopup = jest.fn((auth, provider) =>
+// if (signInWithPopup === false) {
+//   const error = {
+//     code: 'auth/popup-closed-by-user',
+//   };
+//   return Promise.reject(error);
+// }
+// // console.log('ýa me llamaron :)');
+// return Promise.resolve({ user: 'álgo' });
+// console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
+  new Promise((resolve, reject) => {
+    // if (signInWithPopup === false) {
+    //   const error = {
+    //     code: 'auth/popup-closed-by-user',
+    //   };
+    //   reject(error);
+    // }
+    // console.log('ýa me llamaron :)');
+    resolve({ user: 'álgo' });
+    // reject({ error: 'auth/popup-closed-by-user' })
+  }));
 // export class TwitterAuthProvider {
 //   constructor() {
 //     this.id = 'twitter';
