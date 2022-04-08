@@ -137,18 +137,22 @@ export const postHome = (displayName, inputHome, postId, postLikes) => {
     countAndHeart.removeChild(heart);
     countAndHeart.appendChild(heartWithLike);
   }
+  let totalLike;
   heart.addEventListener('click', (event) => {
     likes(event.srcElement.attributes.postid.nodeValue);
     heart.style.display = 'none';
     countAndHeart.appendChild(heartWithLike);
+    totalLike = postLikes.length + 1;
+    likesCounter.innerText = totalLike;
   });
 
   heartWithLike.addEventListener('click', (event) => {
     dislike(event.srcElement.attributes.postid.nodeValue);
     countAndHeart.removeChild(heartWithLike);
     heart.style.display = 'block';
-    // document.location.reload();
+    likesCounter.innerText = totalLike - 1;
   });
+  // document.location.reload();
   return postDiv;
 };
 

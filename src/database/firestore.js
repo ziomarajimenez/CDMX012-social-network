@@ -24,7 +24,6 @@ export const getPost = async () => {
   return orderPost;
 };
 
-// const data = collection
 export const likes = async (postId) => {
   const auth = getAuth();
   const user = auth.currentUser;
