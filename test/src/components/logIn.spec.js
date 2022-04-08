@@ -1,5 +1,5 @@
 import {
-  loginUserWithEmail, loginUserWithGoogle, loginUserWithTwitter,
+  loginUserWithEmail, loginUserWithGoogle,
 } from '../../../src/database/firebase.js';
 import { signInWithPopup } from '../../../src/database/firebase-import.js';
 
@@ -30,29 +30,12 @@ describe('loginUserWithGoogle', () => {
     expect(typeof loginUserWithGoogle).toBe('function');
   });
   it('Should return true', async () => {
-    signInWithPopup.mockResolvedValue();
     const login = await loginUserWithGoogle();
     expect(login).toBe(true);
   });
   it('Should return false', async () => {
     signInWithPopup.mockRejectedValue();
     const login = await loginUserWithGoogle();
-    expect(login).toBe(false);
-  });
-});
-
-describe('loginUserWithTwitter', () => {
-  it('Should be a function', async () => {
-    expect(typeof loginUserWithTwitter).toBe('function');
-  });
-  it('Should return true', async () => {
-    signInWithPopup.mockResolvedValue();
-    const login = await loginUserWithTwitter();
-    expect(login).toBe(true);
-  });
-  it('Should return false', async () => {
-    signInWithPopup.mockRejectedValue();
-    const login = await loginUserWithTwitter();
     expect(login).toBe(false);
   });
 });

@@ -5,7 +5,6 @@ import {
   signOut,
 } from './firebase-import.js';
 import { firebaseSecret } from './firebase-secret.js';
-// import { email, password } from '../components/logIn.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseSecret);
@@ -87,6 +86,7 @@ export const loginUserWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
+    // console.log(userCredential)
     const credential = GoogleAuthProvider.credentialFromResult(userCredential);
     const token = credential.accessToken;
     const user = userCredential.user;
@@ -96,6 +96,7 @@ export const loginUserWithGoogle = async () => {
     });
     loginWithGoogle = true;
   } catch (error) {
+    // console.log(error);
     loginWithGoogle = false;
   }
   return loginWithGoogle;
@@ -111,6 +112,7 @@ export const loginUserWithTwitter = async () => {
     const token = credential.accessToken;
     // const secret = credential.secret;
     const user = userCredential.user;
+    console.log(userCredential);
     const dt = new Date();
     update(ref(database, `users/${user.uid}`), {
       last_login: dt,
