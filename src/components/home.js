@@ -99,6 +99,7 @@ export const postHome = (displayName, inputHome, id) => {
     cancel.style.display = 'none';
     update.style.display = 'none';
     const docId = event.target.dataset.id;
+    console.log (docId);
     const postEdit = await getPostEdit(docId);
     const postData = postEdit.data();
 
