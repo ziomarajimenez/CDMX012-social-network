@@ -5,7 +5,6 @@ import {
   signOut,
 } from './firebase-import.js';
 import { firebaseSecret } from './firebase-secret.js';
-// import { email, password } from '../components/logIn.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseSecret);
@@ -109,7 +108,6 @@ export const loginUserWithTwitter = async () => {
     const userCredential = await signInWithPopup(auth, provider2);
     const credential = TwitterAuthProvider.credentialFromResult(userCredential);
     const token = credential.accessToken;
-    // const secret = credential.secret;
     const user = userCredential.user;
     const dt = new Date();
     update(ref(database, `users/${user.uid}`), {
@@ -128,7 +126,6 @@ export const logOut = async () => {
   try {
     signOut(auth);
   } catch (error) {
-    console.log(error);
   // eslint-disable-next-line no-empty
   }
 };

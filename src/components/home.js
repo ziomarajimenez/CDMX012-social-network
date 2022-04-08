@@ -4,32 +4,25 @@
 /* eslint-disable import/no-cycle */
 import { onNavigate } from '../main.js';
 import {
-  post, getPost, getPostEdit, updateText,
+  post, getPost, getPostEdit, updateText, db, likes, dislike,
 } from '../database/firestore.js';
-// import { doc, deleteDoc } from '../database/firebase-import';
-
+import { doc, deleteDoc } from '../database/firebase-import.js';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
+let localDoc;
 export const renderPost = async () => {
   const posts = await getPost();
   const arrayPost = [];
   posts.forEach((doc) => {
-    const localDoc = { ...doc.data() };
+    localDoc = { ...doc.data() };
     localDoc.id = doc.id;
     arrayPost.push(localDoc);
   });
   return arrayPost;
 };
 
-// const postHome = (displayName, inputHome) => {
-//     arrayPost.push(doc.data());
-//     // console.log(JSON.stringify(doc.data()));
-//   });
-//   return arrayPost;
-// };
-
-export const postHome = (displayName, inputHome, id) => {
+export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => {
   // Elements
   const postDiv = document.createElement('div');
   const postName = document.createElement('p');
@@ -41,6 +34,7 @@ export const postHome = (displayName, inputHome, id) => {
   const countAndHeart = document.createElement('div');
   const likesCounter = document.createElement('div');
   const heart = document.createElement('img');
+  const heartWithLike = document.createElement('img');
   const homeHeader = document.createElement('header');
   const logoHeader = document.createElement('img');
   const divPages = document.createElement('div');
@@ -64,29 +58,39 @@ export const postHome = (displayName, inputHome, id) => {
   editPost.setAttribute('id', 'editPost');
   deletePost.setAttribute('src', '../assets/img/delete.png');
   deletePost.setAttribute('id', 'deletePost');
+  deletePost.setAttribute('postId', postId);
   options.setAttribute('id', 'options');
   update.setAttribute('type', 'button');
   update.setAttribute('id', 'update');
-  update.setAttribute('data-id', id);
+  update.setAttribute('data-id', postId);
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
   heart.setAttribute('src', '../assets/img/heart.png');
+  heart.setAttribute('postId', postId);
   countAndHeart.setAttribute('id', 'countAndHeart');
   heart.setAttribute('id', 'heart');
+  heart.setAttribute('class', 'heartLike');
+  heart.setAttribute('type', 'submit');
+  heartWithLike.setAttribute('src', '../assets/img/like.png');
+  heartWithLike.setAttribute('postId', postId);
+  heartWithLike.setAttribute('id', 'heartWithLike');
+  heartWithLike.setAttribute('class', 'dislike');
+  heartWithLike.setAttribute('type', 'submit');
   under.setAttribute('id', 'under');
 
   // Iner text
   postName.innerText = displayName;
   postText.innerText = inputHome;
-  likesCounter.innerText = '5';
+  likesCounter.innerText = postLikes.length;
   update.innerText = 'Update';
   cancel.innerText = 'Cancel';
 
   // Append
   countAndHeart.append(likesCounter, heart);
   under.append(countAndHeart, cancel, update);
-  options.append(imgPost, editPost, deletePost);
+  options.appendChild(imgPost);
+  if (isOwner) { options.append(editPost, deletePost); }
   postDiv.append(options, postName, postText, under);
 
   editPost.addEventListener('click', () => {
@@ -104,7 +108,6 @@ export const postHome = (displayName, inputHome, id) => {
     const postData = postEdit.data();
 
     postData.text = postText.value;
-    // console.log(postData);
     updateText(
       docId,
       postData,
@@ -117,13 +120,36 @@ export const postHome = (displayName, inputHome, id) => {
     update.style.display = 'none';
   });
 
-  // Create the modal
-  deletePost.addEventListener('click', () => {
+  // Delete Post
+  deletePost.addEventListener('click', (event) => {
     createModal();
-    // document.getElementById('btnDelete').addEventListener('click', async () => {
-    //   await deleteDoc(doc(db, 'Posts', 'id'));
+    console.log(event.srcElement.attributes.postId.nodeValue);
+    document.getElementById('btnDelete').addEventListener('click', async () => {
+      await deleteDoc(doc(db, 'Posts', event.srcElement.attributes.postId.nodeValue));
+      document.location.reload();
+    });
+  });
 
-    // });
+  const actualUser = JSON.parse(sessionStorage.getItem('userData'));
+  const containsLikes = postLikes.includes(actualUser.uid);
+  if (containsLikes) {
+    countAndHeart.removeChild(heart);
+    countAndHeart.appendChild(heartWithLike);
+  }
+  let totalLike;
+  heart.addEventListener('click', (event) => {
+    likes(event.srcElement.attributes.postid.nodeValue);
+    heart.style.display = 'none';
+    countAndHeart.appendChild(heartWithLike);
+    totalLike = postLikes.length + 1;
+    likesCounter.innerText = totalLike;
+  });
+
+  heartWithLike.addEventListener('click', (event) => {
+    dislike(event.srcElement.attributes.postid.nodeValue);
+    countAndHeart.removeChild(heartWithLike);
+    heart.style.display = 'block';
+    likesCounter.innerText = totalLike - 1;
   });
   return postDiv;
 };
@@ -174,9 +200,10 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
-  // console.log(arrayPost);
+  const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
-    const postDiv = postHome(post.displayName, post.text, post.id);
+    const isOwner = actualUser.uid === post.uid;
+    const postDiv = postHome(post.displayName, post.text, isOwner, post.id, post.likes);
     divPosts.appendChild(postDiv);
   });
 
@@ -187,13 +214,12 @@ export const home = async () => {
   globalContainer.appendChild(displayHome);
 
   btnPost.addEventListener('click', () => {
-    // actualizar el código para recibir el id de firestore
-    const postDiv = postHome(userlogin.displayName, inputHome.value, 'id 1234');
+    const postDiv = postHome(userlogin.displayName, inputHome.value, true, null, 'id 1234');
     const toShare = inputHome.value;
     post(toShare, userlogin.displayName);
     divPosts.insertBefore(postDiv, divPosts.firstChild);
     inputHome.value = '';
-    // onNavigate('/home');
+    document.getElementById('likesCounter').innerText = 0;
   });
 
   function OnInput() {
@@ -213,5 +239,4 @@ export const home = async () => {
       onNavigate('/');
     });
   });
-  // return displayHome;
 };

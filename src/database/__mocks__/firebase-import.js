@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 // eslint-disable-next-line max-classes-per-file
 export const initializeApp = (secret) => ({});
 export const getDatabase = (initializeAppObject) => ({});
@@ -17,19 +18,11 @@ export const createUserWithEmailAndPassword = (auth, email, password) => {
 
 export const set = (ref) => ({});
 
-// export class GoogleAuthProvider {
-//   constructor() {
-//     this.id = 'google.com';
-//   }
-// }
+export const signInWithPopup = jest.fn((auth, provider) =>
 
-export const signInWithPopup = jest.fn((auth, provider) => Promise.resolve({}));
-
-// export class TwitterAuthProvider {
-//   constructor() {
-//     this.id = 'twitter';
-//   }
-// }
+  new Promise((resolve, reject) => {
+    resolve({ user: 'álgo' });
+  }));
 
 export class loginUserWithEmail {
   constructor() {
