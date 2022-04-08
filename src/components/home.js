@@ -10,17 +10,6 @@ import { doc, deleteDoc } from '../database/firebase-import.js';
 import { logOut } from '../database/firebase.js';
 import { createModal } from './modal.js';
 
-// export const renderPost = async () => {
-//   const posts = await getPost();
-//   const arrayPost = [];
-//   posts.forEach((doc) => {
-//     const localDoc = { ...doc.data() };
-//     localDoc.id = doc.id;
-//     arrayPost.push(localDoc);
-//   });
-//   return arrayPost;
-// };
-
 let localDoc;
 export const renderPost = async () => {
   const posts = await getPost();
@@ -77,7 +66,6 @@ export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => 
   cancel.setAttribute('type', 'button');
   cancel.setAttribute('id', 'cancel');
   likesCounter.setAttribute('id', 'likesCounter');
-  // likesCounter.setAttribute('postId', postId);
   heart.setAttribute('src', '../assets/img/heart.png');
   heart.setAttribute('postId', postId);
   countAndHeart.setAttribute('id', 'countAndHeart');
@@ -115,12 +103,10 @@ export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => 
     cancel.style.display = 'none';
     update.style.display = 'none';
     const docId = event.target.dataset.id;
-    console.log(event);
     const postEdit = await getPostEdit(docId);
     const postData = postEdit.data();
 
     postData.text = postText.value;
-    // console.log(postData);
     updateText(
       docId,
       postData,
@@ -133,8 +119,7 @@ export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => 
     update.style.display = 'none';
   });
 
-  // Create the modal
-
+  // Delete Post
   deletePost.addEventListener('click', (event) => {
     createModal();
     console.log(event.srcElement.attributes.postId.nodeValue);
@@ -147,7 +132,6 @@ export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => 
   const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   const containsLikes = postLikes.includes(actualUser.uid);
   if (containsLikes) {
-    // heart.src = '../assets/img/like.png';
     countAndHeart.removeChild(heart);
     countAndHeart.appendChild(heartWithLike);
   }
@@ -166,7 +150,6 @@ export const postHome = (displayName, inputHome, isOwner, postId, postLikes) => 
     heart.style.display = 'block';
     likesCounter.innerText = totalLike - 1;
   });
-  // document.location.reload();
   return postDiv;
 };
 
@@ -216,7 +199,6 @@ export const home = async () => {
   divPages.append(btnHome, btnProfile, btnNotifications, btnLogout);
   homeHeader.appendChild(logoHeader);
   divHome.append(inputHome, btnPost);
-  console.log(arrayPost);
   const actualUser = JSON.parse(sessionStorage.getItem('userData'));
   arrayPost.forEach((post) => {
     const isOwner = actualUser.uid === post.uid;
@@ -236,8 +218,7 @@ export const home = async () => {
     post(toShare, userlogin.displayName);
     divPosts.insertBefore(postDiv, divPosts.firstChild);
     inputHome.value = '';
-    // document.location.reload();
-    // onNavigate('/home');
+    document.getElementById('likesCounter').innerText = 0;
   });
 
   function OnInput() {
@@ -257,5 +238,4 @@ export const home = async () => {
       onNavigate('/');
     });
   });
-  // return displayHome;
 };

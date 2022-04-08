@@ -86,7 +86,6 @@ export const loginUserWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
-    // console.log(userCredential)
     const credential = GoogleAuthProvider.credentialFromResult(userCredential);
     const token = credential.accessToken;
     const user = userCredential.user;
@@ -96,7 +95,6 @@ export const loginUserWithGoogle = async () => {
     });
     loginWithGoogle = true;
   } catch (error) {
-    // console.log(error);
     loginWithGoogle = false;
   }
   return loginWithGoogle;
@@ -110,9 +108,7 @@ export const loginUserWithTwitter = async () => {
     const userCredential = await signInWithPopup(auth, provider2);
     const credential = TwitterAuthProvider.credentialFromResult(userCredential);
     const token = credential.accessToken;
-    // const secret = credential.secret;
     const user = userCredential.user;
-    console.log(userCredential);
     const dt = new Date();
     update(ref(database, `users/${user.uid}`), {
       last_login: dt,
@@ -130,7 +126,6 @@ export const logOut = async () => {
   try {
     signOut(auth);
   } catch (error) {
-    console.log(error);
   // eslint-disable-next-line no-empty
   }
 };
