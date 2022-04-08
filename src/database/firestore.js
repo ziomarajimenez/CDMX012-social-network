@@ -49,11 +49,5 @@ export const dislike = async (postId) => {
   }
 };
 
-export const likeCounter = () => getDoc(collection(db, 'Posts'), {
-  likes: [],
-});
-
 export const getPostEdit = (id) => getDoc(doc(db, 'Posts', id));
 export const updateText = (id, newFields) => updateDoc(doc(db, 'Posts', id), newFields);
-
-
